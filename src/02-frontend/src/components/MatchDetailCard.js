@@ -1,18 +1,32 @@
 import {React} from 'react';
 import { Link } from 'react-router-dom';
+import './MatchDetailCard.scss';
 
 export const MatchDetailCard = ({teamName, match}) => {
   if (match == null) return null;
     const otherTeam=  match.team1 === teamName ? match.team2 : match.team1;
     const otherTeamLink= `/teams/${otherTeam}`;
+    const isMatchWon= teamName === match.matchWinner;
 
   return (
-    <div className="MatchDetailCard">
-      <h1> vs <Link to={otherTeamLink}>{otherTeam}</Link></h1>
-
-      <h2> {match.matchWinner} won by {match.resultMargin} {match.result}</h2>
-      <h3> on {match.date}</h3>
-      <h4> at {match.venue}</h4>
+    <div className= {isMatchWon ? "won-match-card MatchDetailCard":"lost-match-card MatchDetailCard"}>
+      <div>
+        <span className="vs">vs </span>
+        <h1> <Link to={otherTeamLink}> {otherTeam} </Link> </h1>
+        <h2 className="match-result"> {match.matchWinner} won by {match.resultMargin} {match.result}</h2>
+        <h3 className="match-date"> on {match.date}</h3>
+        <h4 className="match-venue"> at {match.venue}</h4>
+      </div>
+      <div className="additional-detail">
+        <h3>First Innings</h3>
+        <p>{match.team1}</p>
+        <h3>Second Innings</h3>
+        <p>{match.team2}</p>
+        <h3>Man of the Match</h3>
+        <p>{match.playerOfMatch}</p>
+        <h3>Umpires</h3>
+        <p>{match.umpire1}, {match.umpire2}</p>
+      </div>
     </div>
   );
 }
